@@ -1,0 +1,45 @@
+->> Took EFI from original repo (release 1.0.1), then brought much-needed improvements & fixes:
+
+
+-Added kexts listed in Config.plist (kexts folder was empty)
+
+-Reworked kexts order to something cleaner and more logical
+
+-Removed VoodooPS2Controller as this Legion doesn't have a PS/2 keyboard, also the PS/2 mouse and trackpad plugins weren't disabled
+(if keyboard on the 17" model actually is PS/2 and this breaks it, please let me know)
+
+-Corrected WiFi kexts to Airportitlwm for Ventura and itlwm for Sonoma+ (original Config.plist was listing both with no kernel restrictions)
+
+!! -Added the USB map for Legion 5 15ACH6H since no kext was present. May or may not work properly with the 17" variant
+**TO BE REPLACED WITH PROPER MAP
+
+-Removed USBWakeFixup as it seems to do more harm than good, better to use acpi-wake device properties. It is mentioned on the kext's repo that it should only be used when those don't work due to an Intel PCH bug.
+
+!! -Added acpi-wake device properties to XHCI controllers (assumed path is same as my Legion 5 15ACH6H, didn't have ACPI tables to verify)
+**NEEDS VERIFICATION
+
+-Added IntelBluetoothInjector and applied kernel restrictions to Bluetooth kexts so that it can work on any version of macOS you'd ever install on this Legion
+
+-Added ECEnabler to make sure all EC fields can be read
+
+-Added SMCRadeonSensors for iGPU
+
+-Added RestrictEvents NVRAM variables for CPU rename & force VMM SB model for OTA updates & disable mediaanalysisd
+
+-Removed SSDT-HPET and related patches (causes ACPI issues on
+
+-Replaced SSDT-EC by a custom SSDT that adds a fake EC without doing ANYTHING to the real one (those Legions have weird ACPI handling and the normal SSDT-EC may or may not have been the cause to my battery status freezing after wake from sleep)
+
+-Merged SSDT-USBX into the new SSDT-EC
+
+-Removed unused .efi drivers and tools, some of which may even cause issues
+
+-Added ExtremeXT's custom SSDT and patches to properly disable dGPU (-wegnoegpu hides it to macOS but it could still be on and draw power)
+
+-Added SFRZ namespace acpi fix
+
+-Added built-in device property to internal SSDs. innie.kext could do the trick too, it's up to personal preference
+
+-Added an SSDT-ALS0 and SMCLightSensor.kext as recommended by ChefKiss for NootedRed
+
+-Updated OpenCore bootloader to Release 1.0.3 and disabled settings that require debug version
